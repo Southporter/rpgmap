@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import { Container } from './common';
+import CardHeader from '@material-ui/core/CardHeader';
+import { Row, Spacer } from './common';
 
-const Row = styled.div`
-	flex: 1;
-	flex-direction: row;
-	justify-content: space-around;
+const RowPadding = styled.div`
+	margin: 5vh;
 `;
+
 
 export default class ChoosePage extends PureComponent {
 	static propTypes = {
@@ -17,12 +17,31 @@ export default class ChoosePage extends PureComponent {
 	render() {
 		const { moveTo } = this.props;
 		return (
-			<Container>
-				<Row>
-					<Button onClick={moveTo('create')}>Create Room</Button>
-					<Button onClick={moveTo('join')}>Join Room</Button>
-				</Row>
-			</Container>
+			<div>
+				<CardHeader
+					title='Welcome'
+					subheader='What can we do for you?'
+					/>
+				<RowPadding>
+					<Row>
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={moveTo('create')}
+							>
+							Create Room
+						</Button>
+						<Spacer />
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={moveTo('join')}
+							>
+							Join Room
+						</Button>
+					</Row>
+				</RowPadding>
+			</div>
 		);
 	}
 }

@@ -1,51 +1,75 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import { Container } from './common';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import { Row, Spacer } from './common';
 
-const Row = styled.div`
-	flex: 1;
-	flex-direction: row;
-	justify-content: space-around;
+const RowPadding = styled.div`
+	margin: 5vh;
 `;
+
+const LeftAlign = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+`;
+
 
 export default class ChoosePage extends PureComponent {
 	static propTypes = {
 	}
 
-	state = {}
+	state = {
+	}
 
 	handleChange = (key) => (event) => {
-		if (Number(event.target.value))
+		const value = event.target.value;
+		if (Number(value) || !value)
 			this.setState({ [key]: event.target.value });
 	}
 
 	render() {
+		const { height, width } = this.state;
 		console.debug('state', this.state);
 		return (
-			<Container>
-				<Row>
-					<FormControl>
-						<InputLabel htmlFor="height">Height</InputLabel>
-						<Input
+			<div>
+				<CardHeader
+					title='Set Dimensions'
+					/>
+				<RowPadding>
+					<Row>
+						<TextField
 							id='height'
-							value={this.state.height}
+							label='Height'
+							value={height}
 							onChange={this.handleChange('height')}
+							margin='normal'
 							/>
-					</FormControl>
-					<FormControl>
-						<InputLabel htmlFor="width">Width</InputLabel>
-						<Input
+						<Spacer />
+						<TextField
 							id='width'
-							value={this.state.width}
+							label='Width'
+							value={width}
 							onChange={this.handleChange('width')}
+							margin='normal'
 							/>
-					</FormControl>
-				</Row>
-			</Container>
+					</Row>
+				</RowPadding>
+				<RowPadding>
+					<LeftAlign>
+						<Button
+							variant='contained'
+							color='primary'
+							disabled={!(width && height)}
+							onClick={Function.prototype}
+							>
+							Start
+						</Button>
+					</LeftAlign>
+				</RowPadding>
+			</div>
 		);
 	}
 }
