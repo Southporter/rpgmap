@@ -6,7 +6,7 @@ const initialState = Map({
 	characters: Map(),
 });
 
-export function map(state = initialState, action = {}) {
+export default function map(state = initialState, action = {}) {
 	switch (action.type) {
 		default:
 			return state;
