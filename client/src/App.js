@@ -1,20 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Map as ImmutableMap } from 'immutable';
-import red from '@material-ui/core/colors/red';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { moveCharacter } from './actions/characters';
+import { updateSize } from './actions/map';
 import WelcomeModal from './components/welcome/WelcomeModal';
 import Map from './components/map/Map';
 
 class App extends PureComponent {
+	static propTypes = {
+		size: PropTypes.object,
+		characters: PropTypes.object,
+		moveCharacter: PropTypes.func.isRequired,
+	}
 	state = {
 		isWelcomeModalOpen: true,
-		size: {
-			height: 5,
-			width: 5,
-		},
-		characters: ImmutableMap({
-			Alhrein: { row: 2, col: 3, name: 'Alhrein' },
-			Torleig: { row: 1, col: 1, name: 'Torleig', color: red[500] },
-		}),
 	}
 
 	closeWelcomeModal = () => this.setState({ isWelcomeModalOpen: false })
@@ -22,19 +21,16 @@ class App extends PureComponent {
 	handleRoomCreation = () => console.log('creating');
 	handleRoomJoin = () => console.log('join');
 
-	handleDrop = (character, row, column) => this.setState(state => ({
-		characters: state.characters.set(character.name, { ...character, row, col: column }),
-	}))
-
 	render() {
 		return (
 			<div>
 				<Map
-					{...this.state.size}
-					characters={this.state.characters}
-					onDrop={this.handleDrop}
+					{...this.props.size}
+					characters={this.props.characters}
+					onDrop={this.props.moveCharacter}
 					/>
 				<WelcomeModal
+					{...this.props}
 					open={this.state.isWelcomeModalOpen}
 					close={this.closeWelcomeModal}
 					onCreate={this.handleRoomCreation}
@@ -45,4 +41,16 @@ class App extends PureComponent {
 	}
 }
 
-export default App;
+function mapStateToProps(state) {
+	return {
+		characters: state.characters.get('players'),
+		size: state.map.toJS(),
+	};
+}
+
+const mapDispatchToProps = {
+	moveCharacter,
+	updateSize,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

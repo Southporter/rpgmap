@@ -40,9 +40,13 @@ export default class WelcomeModal extends PureComponent {
 	}
 
 	render() {
-		const { open, close } = this.props;
+		const { open } = this.props;
 		return (
-			<Modal open={open} close={close}>
+			<Modal
+				open={open}
+				disableEscapeKeyDown={true}
+				disableBackdropClick={true}
+				>
 				<ModalContainer>
 					<Paper>
 						<Card>

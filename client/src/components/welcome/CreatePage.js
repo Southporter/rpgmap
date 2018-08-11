@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -19,20 +20,27 @@ const LeftAlign = styled.div`
 
 export default class ChoosePage extends PureComponent {
 	static propTypes = {
+		updateSize: PropTypes.func.isRequired,
+		close: PropTypes.func.isRequired,
 	}
 
 	state = {
+		height: '',
+		width: '',
 	}
 
 	handleChange = (key) => (event) => {
 		const value = event.target.value;
 		if (Number(value) || !value)
-			this.setState({ [key]: event.target.value });
+			this.setState({ [key]: Number(value) });
+	}
+
+	handleCreate = () => {
+		this.props.updateSize(this.state.height, this.state.width);
+		this.props.close();
 	}
 
 	render() {
-		const { height, width } = this.state;
-		console.debug('state', this.state);
 		return (
 			<div>
 				<CardHeader
@@ -43,7 +51,7 @@ export default class ChoosePage extends PureComponent {
 						<TextField
 							id='height'
 							label='Height'
-							value={height}
+							value={this.state.height}
 							onChange={this.handleChange('height')}
 							margin='normal'
 							/>
@@ -51,7 +59,7 @@ export default class ChoosePage extends PureComponent {
 						<TextField
 							id='width'
 							label='Width'
-							value={width}
+							value={this.state.width}
 							onChange={this.handleChange('width')}
 							margin='normal'
 							/>
@@ -62,8 +70,8 @@ export default class ChoosePage extends PureComponent {
 						<Button
 							variant='contained'
 							color='primary'
-							disabled={!(width && height)}
-							onClick={Function.prototype}
+							disabled={!(this.state.width && this.state.height)}
+							onClick={this.handleCreate}
 							>
 							Start
 						</Button>
