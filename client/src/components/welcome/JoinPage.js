@@ -10,7 +10,7 @@ const RowPadding = styled.div`
 	margin: 5vh;
 `;
 
-const LeftAlign = styled.div`
+const RightAlign = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -20,25 +20,23 @@ const LeftAlign = styled.div`
 
 export default class ChoosePage extends PureComponent {
 	static propTypes = {
-		updateSize: PropTypes.func.isRequired,
 		close: PropTypes.func.isRequired,
-		onCreate: PropTypes.func.isRequired,
+		onJoin: PropTypes.func.isRequired,
 	}
 
 	state = {
-		height: '',
-		width: '',
+		roomCode: '',
+		name: '',
 	}
 
-	handleChange = (key) => (event) => {
+	handleChange = key => (event) => {
 		const value = event.target.value;
-		if (Number(value) || !value)
-			this.setState({ [key]: Number(value) });
+		this.setState({ [key]: value });
 	}
 
-	handleCreate = () => {
-		this.props.updateSize(this.state.height, this.state.width);
-		this.props.onCreate();
+	handleJoin = () => {
+		const { roomCode, name } = this.state;
+		this.props.onJoin(roomCode, name);
 		this.props.close();
 	}
 
@@ -51,33 +49,33 @@ export default class ChoosePage extends PureComponent {
 				<RowPadding>
 					<Row>
 						<TextField
-							id='height'
-							label='Height'
-							value={this.state.height}
-							onChange={this.handleChange('height')}
+							id='roomCode'
+							label='Room Code'
+							value={this.state.roomCode}
+							onChange={this.handleChange('roomCode')}
 							margin='normal'
 							/>
 						<Spacer />
 						<TextField
-							id='width'
-							label='Width'
-							value={this.state.width}
-							onChange={this.handleChange('width')}
+							id='name'
+							label='Character name'
+							value={this.state.name}
+							onChange={this.handleChange('name')}
 							margin='normal'
 							/>
 					</Row>
 				</RowPadding>
 				<RowPadding>
-					<LeftAlign>
+					<RightAlign>
 						<Button
 							variant='contained'
 							color='primary'
-							disabled={!(this.state.width && this.state.height)}
-							onClick={this.handleCreate}
+							disabled={!this.state.roomCode}
+							onClick={this.handleJoin}
 							>
-							Start
+							Join
 						</Button>
-					</LeftAlign>
+					</RightAlign>
 				</RowPadding>
 			</div>
 		);

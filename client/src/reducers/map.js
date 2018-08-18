@@ -1,15 +1,22 @@
-import { Map } from 'immutable';
-import { UPDATE_SIZE } from '../actions/map';
+import { UPDATE_SIZE, CREATE_ROOM, JOIN_ROOM } from '../actions/map';
+import { RECEIVE_STATE } from '../actions/socket';
 
-const initialState = Map({
+const initialState = {
 	height: 0,
 	width: 0,
-});
+	code: '',
+	role: '',
+};
 
 export default function map(state = initialState, action = {}) {
 	switch (action.type) {
 		case UPDATE_SIZE:
-			return state.merge(action.payload);
+		case CREATE_ROOM:
+		case JOIN_ROOM:
+			return { ...state, ...action.payload };
+		case RECEIVE_STATE:
+			console.debug('recieve state', action);
+			return { ...state, ...action.payload.state.map };
 		default:
 			return state;
 	}

@@ -6,9 +6,15 @@ const handleMessage = (dispatch) => (event) => {
 const handleClose = (dispatch) => (event) => {
 	console.debug('server disconnected', event);
 };
+
 export default function(dispatch) {
 	const socket = new WebSocket('ws://localhost:5000');
 	socket.onmessage = handleMessage(dispatch);
 	socket.onclose = handleClose(dispatch);
 	return socket;
 }
+
+export const sendState = (store, socket) => () => {
+	const { chat, ...state } = store.getState();
+	socket.send(JSON.stringify({ ...action, state }));
+};

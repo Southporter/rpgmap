@@ -6,11 +6,15 @@ import createSagaMiddleware from 'redux-saga';
 import App from './App';
 import appReducers from './reducers';
 import appSagas from './sagas';
+import createSocket, { sendState } from './createSocket';
 import registerServiceWorker from './registerServiceWorker';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(appReducers, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(appSagas);
+const socket = createSocket(store.dispatch);
+sagaMiddleware.run(appSagas, { socket });
+
+store.subscribe(sendState(store, socket));
 
 ReactDOM.render(
 	<Provider store={store}>

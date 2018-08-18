@@ -1,10 +1,11 @@
-import { all, takeLatest } from 'redux-saga/effects';
-import { sendState, receiveState } from './socket';
-import { SEND_STATE, RECEIVE_STATE } from '../actions/socket';
+import { all, fork, takeLatest } from 'redux-saga/effects';
+import { receiveState } from './socket';
+import connect from './connect';
+import { RECEIVE_STATE } from '../actions/socket';
 
 export default function* rootSaga(params) {
 	yield all([
-		takeLatest(SEND_STATE, sendState, params),
-		takeLatest(RECEIVE_STATE, receiveState),
+		takeLatest(RECEIVE_STATE, receiveState, params),
+		fork(connect, params),
 	]);
 }

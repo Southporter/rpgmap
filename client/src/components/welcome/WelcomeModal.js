@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 
 import ChoosePage from './ChoosePage';
 import CreatePage from './CreatePage';
+import JoinPage from './JoinPage';
 
 const ModalContainer = styled.div`
 	background-color: transparent;
@@ -34,6 +35,8 @@ export default class WelcomeModal extends PureComponent {
 		switch (this.state.currentPage) {
 			case 'create':
 				return <CreatePage {...this.props} />;
+			case 'join':
+				return <JoinPage {...this.props} />;
 			default:
 				return <ChoosePage {...this.props} moveTo={this.moveTo} />;
 		}
