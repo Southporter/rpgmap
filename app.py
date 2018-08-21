@@ -31,7 +31,7 @@ def handle_join(data):
     print('join data', data)
     if data['code'] in ROOMS:
         join_room(data['code'])
-        emit('joinedRoom', {'code': data['code'], 'state': ROOMS[data['code']]})
+        emit('joinedRoom', {'code': data['code'], 'state': ROOMS[data['code']], 'name': data['role']}, room=data['code'])
 
 
 if __name__ == '__main__':

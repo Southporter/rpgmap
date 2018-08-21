@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { Container, Row } from '../welcome/common';
+import UnplacedCharacters from '../unplaced/UnplacedCharacters';
 import Tile from '../tile/Tile';
 import PlayerCharacter from '../characters/PlayerCharacter';
 
@@ -62,7 +63,11 @@ class Map extends PureComponent {
 		return (
 			<Container>
 				{this.renderRows()}
+				<UnplacedCharacters
+					characters={this.props.unplaced}
+					/>
 			</Container>
+
 		);
 	}
 }

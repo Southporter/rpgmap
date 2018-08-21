@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import App from './App';
@@ -10,7 +10,9 @@ import createSocket, { sendState } from './createSocket';
 import registerServiceWorker from './registerServiceWorker';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(appReducers, applyMiddleware(sagaMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(appReducers, composeEnhancers(
+	applyMiddleware(sagaMiddleware)));
 const socket = createSocket(store.dispatch);
 sagaMiddleware.run(appSagas, { socket });
 
