@@ -18,7 +18,7 @@ def on_create(data):
 
 @socketio.on('createRoom')
 def handle_create(data):
-    print('create data', data)
+    print('create room')
     if data['code'] not in ROOMS:
         if data['role'] == 'ADMIN':
             print('setting up room', data['state'])
@@ -28,10 +28,19 @@ def handle_create(data):
 
 @socketio.on('joinRoom')
 def handle_join(data):
-    print('join data', data)
+    print('join room')
     if data['code'] in ROOMS:
         join_room(data['code'])
         emit('joinedRoom', {'code': data['code'], 'state': ROOMS[data['code']], 'name': data['role']}, room=data['code'])
+
+
+@socketio.on('sendState')
+def handle_state(data):
+    print('handling state', data['state'])
+    if data['code'] in ROOMS:
+        ROOMS[data['code']] = data['state']
+        emit('message', { 'code': data['code'], 'state': data['state'] }, room=data['code'])
+
 
 
 if __name__ == '__main__':

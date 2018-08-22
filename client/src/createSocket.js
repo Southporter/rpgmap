@@ -2,9 +2,10 @@ import io from 'socket.io-client';
 import { ROLES } from './constants';
 import { RECEIVE_STATE } from './actions/socket';
 import { PLAYER_JOINED } from './actions/characters';
+import { CREATED_ROOM } from './actions/map';
 
 const handleCreatedMessage = (dispatch) => (event) => {
-	dispatch({ type: 'CREATED_ROOM', payload: event });
+	dispatch({ type: CREATED_ROOM, payload: event });
 };
 
 const handleMessage = (dispatch) => (event) => {
@@ -13,6 +14,7 @@ const handleMessage = (dispatch) => (event) => {
 };
 
 const handleJoin = (dispatch) => (event) => {
+	console.debug('handling join', event);
 	dispatch({ type: PLAYER_JOINED, payload: event.name });
 };
 
@@ -29,16 +31,18 @@ export default function createSocket(dispatch) {
 	return socket;
 }
 
-export const sendState = (store, socket) => () => {
-	const { chat, ...state } = store.getState();
-	const roomCode = state.map.code;
+export const sendState = (state, socket) => {
+	// eslint-disable-next-line no-unused-vars
+	const { chat, ...rest } = state;
+	const code = state.map.code;
 	const role = state.map.role;
 
-	if (roomCode && role === ROLES.ADMIN) {
+	console.debug('sending state', role);
+	if (code && role === ROLES.ADMIN) {
 		socket.emit('sendState', {
-			room: roomCode,
+			code,
 			role,
-			state,
+			state: rest,
 		});
 	}
 };

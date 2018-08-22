@@ -16,19 +16,33 @@ function getRandomColor() {
   return color;
 }
 
+function handleCharacterMove(state, payload) {
+	let unplacedCharacters = state.get('unplacedCharacters');
+	const unplacedIndex = unplacedCharacters.findIndex(character => character.name === payload.name);
+	if (~unplacedIndex) {
+		unplacedCharacters = unplacedCharacters.delete(unplacedIndex);
+	}
+	return state.setIn(['characters', payload.name], payload).set('unplacedCharacters', unplacedCharacters);
+}
+
 function handlePlayerCreation(state, name, color = getRandomColor()) {
 	const unplacedCharacters = state.get('unplacedCharacters');
 	const newUnplacedCharacters = unplacedCharacters.push({ name, color });
 	return state.set('unplacedCharacters', newUnplacedCharacters);
 }
 
+function handleReceivedState(state, newState) {
+	return state.set('characters', Map(newState.characters.characters))
+		.set('unplacedCharacters', List(newState.characters.unplacedCharacters));
+}
+
 export default function map(state = initialState, action = {}) {
 	const { type, payload } = action;
 	switch (type) {
 		case MOVE_CHARACTER:
-			return state.setIn(['players', payload.name], payload);
+			return handleCharacterMove(state, payload);
 		case RECEIVE_STATE:
-			return state.merge(action.payload.state.characters);
+			return handleReceivedState(state, payload.state);
 		case CREATE_PLAYER:
 			return handlePlayerCreation(state, action.payload);
 		default:

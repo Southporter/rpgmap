@@ -18,7 +18,6 @@ class PlayerCharacter extends PureComponent {
 
 	render() {
 		const { connectDragSource, name, color } = this.props;
-		console.debug('creating player', name, color);
 		return connectDragSource(
 			<div>
 				<Avatar

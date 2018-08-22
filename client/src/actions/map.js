@@ -6,6 +6,7 @@ const generateCode = () => `${genVal()}${genVal()}${genVal()}${genVal()}${genVal
 
 export const UPDATE_SIZE = 'UPDATE_SIZE';
 export const CREATE_ROOM = 'CREATE_ROOM';
+export const CREATED_ROOM = 'CREATED_ROOM';
 export const JOIN_ROOM = 'JOIN_ROOM';
 
 export function updateSize(height, width) {

@@ -8,6 +8,5 @@ export function moveCharacter(character, row, column) {
 }
 
 export function createPlayerCharacter(character) {
-	console.debug('creating player', character);
 	return { type: CREATE_PLAYER, payload: character };
 }

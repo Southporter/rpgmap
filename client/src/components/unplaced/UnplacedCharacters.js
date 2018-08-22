@@ -22,6 +22,7 @@ export default class UnplacedCharacters extends PureComponent {
 
 	renderCharacters() {
 		const { characters } = this.props;
+		console.debug('unplaced', characters);
 		return characters.map(character => (
 			<PlayerCharacter
 				name={character.name}

@@ -1,5 +1,5 @@
 import { all, fork, takeEvery, takeLatest } from 'redux-saga/effects';
-import { receiveState } from './socket';
+import { receiveState, listen } from './socket';
 import connect from './connect';
 import { playerJoined } from './characters';
 import { RECEIVE_STATE } from '../actions/socket';
@@ -10,5 +10,6 @@ export default function* rootSaga(params) {
 		takeLatest(RECEIVE_STATE, receiveState, params),
 		fork(connect, params),
 		takeEvery(PLAYER_JOINED, playerJoined),
+		takeEvery('*', listen, params),
 	]);
 }
