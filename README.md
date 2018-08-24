@@ -1,20 +1,27 @@
 # RPG Map
+### Inspiration
+This app was inspired by my cousins. We did a D&D game through Discord and needed a quick way to visualize placement for battle.
 
-## About
-This repository is for the development of a sharable RPG Map to help players visualize the field in a role playing game.
+After some discussion, I determined making an app would be a fun challenge.
 
-## Development
+### React
+The Front-end part of the app is in the client folder. To run:
 
-### Server
-In the root of the repo, run `python app.py`. This will start the Flask server which exposes a websocket
+1. Go to the client folder.
+2. Run `yarn install`. You can use NPM, but YMMV.
+3. Run `yarn start`.
 
-### Client
-In the client folder, run `yarn start` or `npm start` depending on which package manager you use.
+This will set the React app to run at `localhost:3000`.
 
+### Flask
+The Back-end part of the app is in the root folder. To run:
 
-### Goals
-One user (GM) sets up a room with a map given a width and height. He sets up the map using icons for characters.
+* I suggest setting up a virtualenv. This isolates the app and is typical python practice. This app uses Python 3.
+This assumes you created an env folder through virtualenv.
 
-Other users join using the room code. They place their character on the board.
+1. Source your virtual env: `source env/bin/activate`. If using the fish shell: `source env/bin/activate.fish`.
+2. Install the packages needed: `pip install -r requirements.txt`
+3. Run the app. For dev: `python app.py`. For a more production like feel: `FLASK_APP=app.py flask run`.
 
-At this point, anyone can drag and drop their character onto the board. GM can accept/reject this move. GM can drag and drop any icon on the board.
+### Contributing
+If you would like to help, please do. Open a pull request and we'll see if we can't incorporate your work.
