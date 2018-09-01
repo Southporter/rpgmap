@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { moveCharacter } from './actions/characters';
+import { moveCharacter, createCharacter } from './actions/characters';
 import { updateSize, createRoom, joinRoom } from './actions/map';
 import WelcomeModal from './components/welcome/WelcomeModal';
+import CreateCharacterModal from './components/create';
 import Map from './components/map/Map';
 import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 
 class App extends PureComponent {
 	static propTypes = {
@@ -13,16 +15,23 @@ class App extends PureComponent {
 		characters: PropTypes.object,
 		unplaced: PropTypes.object,
 		moveCharacter: PropTypes.func.isRequired,
+		createCharacter: PropTypes.func.isRequired,
 	}
+
 	state = {
 		isWelcomeModalOpen: true,
-		isAddModalOpen: true,
+		isAddModalOpen: false,
 	}
 
 	closeWelcomeModal = () => this.setState({ isWelcomeModalOpen: false })
 
 	toggleAddCharacterModal = () => this.setState(state =>
 		({ ...state, isAddModalOpen: !state.isAddModalOpen }))
+
+	handleCharacterCreation = (character) => {
+		this.props.createCharacter(character);
+		this.toggleAddCharacterModal();
+	}
 
 	render() {
 		return (
@@ -33,12 +42,21 @@ class App extends PureComponent {
 					characters={this.props.characters}
 					onDrop={this.props.moveCharacter}
 					unplaced={this.props.unplaced}
-					/>
+				/>
 				<WelcomeModal
 					{...this.props}
 					open={this.state.isWelcomeModalOpen}
 					close={this.closeWelcomeModal}
-					/>
+				/>
+				<CreateCharacterModal
+					{...this.props}
+					open={this.state.isAddModalOpen}
+					onClose={this.handleCharacterCreation}
+				/>
+				<Footer
+					role={this.props.map.role}
+					onClick={this.toggleAddCharacterModal}
+				/>
 			</div>
 		);
 	}
@@ -57,6 +75,7 @@ const mapDispatchToProps = {
 	updateSize,
 	onJoin: joinRoom,
 	onCreate: createRoom,
+	createCharacter,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -9,21 +9,20 @@ const handleCreatedMessage = (dispatch) => (event) => {
 };
 
 const handleMessage = (dispatch) => (event) => {
-	console.debug('event', event);
 	dispatch({ type: RECEIVE_STATE, payload: event });
 };
 
 const handleJoin = (dispatch) => (event) => {
-	console.debug('handling join', event);
 	dispatch({ type: PLAYER_JOINED, payload: event.name });
 };
 
 const handleClose = (/*dispatch*/) => (event) => {
-	console.debug('server disconnected', event);
+	console.log('server disconnected', event);
 };
 
 export default function createSocket(dispatch) {
-	const socket = io('http://localhost:5000');
+	const url = `http://${window.location.host}:${window.location.port}`;
+	const socket = io(url);
 	socket.on('message', handleMessage(dispatch));
 	socket.on('joinedRoom', handleJoin(dispatch));
 	socket.on('createdRoom', handleCreatedMessage(dispatch));
@@ -37,7 +36,6 @@ export const sendState = (state, socket) => {
 	const code = state.map.code;
 	const role = state.map.role;
 
-	console.debug('sending state', role);
 	if (code && role === ROLES.ADMIN) {
 		socket.emit('sendState', {
 			code,

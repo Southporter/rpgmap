@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { Container, Row } from '../welcome/common';
+import { Container, Row } from '../common';
 import UnplacedCharacters from '../unplaced/UnplacedCharacters';
 import Tile from '../tile/Tile';
 import PlayerCharacter from '../characters/PlayerCharacter';
@@ -12,6 +12,7 @@ class Map extends PureComponent {
 		height: PropTypes.number,
 		width: PropTypes.number,
 		characters: PropTypes.object,
+		unplaced: PropTypes.object,
 	}
 
 	reduceCharacters = (row, column) => (characters, character) => {
@@ -22,7 +23,7 @@ class Map extends PureComponent {
 					key={character.name}
 					character={character}
 					color={character.color}
-					/>
+				/>
 			);
 		}
 		return characters;
@@ -38,7 +39,7 @@ class Map extends PureComponent {
 			key={`tile_${row}_${column}`}
 			row={row}
 			column={column}
-			>
+		>
 			{this.renderCharacters(row, column)}
 		</Tile>
 	)
@@ -65,9 +66,8 @@ class Map extends PureComponent {
 				{this.renderRows()}
 				<UnplacedCharacters
 					characters={this.props.unplaced}
-					/>
+				/>
 			</Container>
-
 		);
 	}
 }

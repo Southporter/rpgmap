@@ -7,7 +7,7 @@ import App from './App';
 import appReducers from './reducers';
 import appSagas from './sagas';
 import createSocket from './createSocket';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -22,4 +22,4 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('root')
 );
-registerServiceWorker();
+// registerServiceWorker();

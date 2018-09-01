@@ -1,5 +1,5 @@
 import { Map, List } from 'immutable';
-import { MOVE_CHARACTER, CREATE_PLAYER } from '../actions/characters';
+import { MOVE_CHARACTER, CREATE_PLAYER, CREATE_CHARACTER } from '../actions/characters';
 import { RECEIVE_STATE } from '../actions/socket';
 
 const initialState = Map({
@@ -30,6 +30,12 @@ function handlePlayerCreation(state, name, color = getRandomColor()) {
 	const newUnplacedCharacters = unplacedCharacters.push({ name, color });
 	return state.set('unplacedCharacters', newUnplacedCharacters);
 }
+function handleCharacterCreation(state, character) {
+	const { name, color = getRandomColor() } = character;
+	const unplacedCharacters = state.get('unplacedCharacters');
+	const newUnplacedCharacters = unplacedCharacters.push({ name, color });
+	return state.set('unplacedCharacters', newUnplacedCharacters);
+}
 
 function handleReceivedState(state, newState) {
 	return state.set('characters', Map(newState.characters.characters))
@@ -45,6 +51,8 @@ export default function map(state = initialState, action = {}) {
 			return handleReceivedState(state, payload.state);
 		case CREATE_PLAYER:
 			return handlePlayerCreation(state, action.payload);
+		case CREATE_CHARACTER:
+			return handleCharacterCreation(state, action.payload);
 		default:
 			return state;
 	}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
-import { Row, Spacer } from './common';
+import { Row, Spacer } from '../common';
 
 const RowPadding = styled.div`
 	margin: 5vh;

@@ -12,7 +12,6 @@ export default function* connect({ socket }) {
 		create: take(CREATE_ROOM),
 		join: take(JOIN_ROOM),
 	});
-	console.debug('action', action);
 	if (action.create) {
 		const state = yield select(selectGameState);
 		socket.emit('createRoom', {

@@ -44,4 +44,5 @@ def handle_state(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    print('Starting App')
+    socketio.run(app, debug=true, log_output=true)

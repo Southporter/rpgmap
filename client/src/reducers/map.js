@@ -15,7 +15,6 @@ export default function map(state = initialState, action = {}) {
 		case JOIN_ROOM:
 			return { ...state, ...action.payload };
 		case RECEIVE_STATE:
-			console.debug('recieve state', action);
 			return { ...state, ...action.payload.state.map };
 		default:
 			return state;
