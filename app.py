@@ -1,3 +1,5 @@
+import logging
+from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template
 from flask_socketio import SocketIO, join_room, emit
 
@@ -44,5 +46,8 @@ def handle_state(data):
 
 
 if __name__ == '__main__':
-    print('Starting App')
+    handler = RotatingFileHandler('foo.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
+    app.logger.info('running app')
     socketio.run(app, debug=true, log_output=true)

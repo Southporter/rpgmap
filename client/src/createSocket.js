@@ -21,7 +21,13 @@ const handleClose = (/*dispatch*/) => (event) => {
 };
 
 export default function createSocket(dispatch) {
-	const url = `http://${window.location.host}:${window.location.port}`;
+	const { protocol, host, port } = window.location;
+	console.debug('port', port);
+	let url = `${protocol}//${host}`;
+	if (port) {
+		url = `${url}:${port}`;
+	}
+	console.debug('url', url);
 	const socket = io(url);
 	socket.on('message', handleMessage(dispatch));
 	socket.on('joinedRoom', handleJoin(dispatch));
