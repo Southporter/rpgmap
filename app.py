@@ -41,7 +41,9 @@ def handle_state(data):
     print('handling state', data['state'])
     if data['code'] in ROOMS:
         ROOMS[data['code']] = data['state']
-        emit('message', { 'code': data['code'], 'state': data['state'] }, room=data['code'])
+        state = data['state']
+        state['map'].pop('role')
+        emit('message', { 'code': data['code'], 'state': state }, room=data['code'])
 
 
 
@@ -50,4 +52,4 @@ if __name__ == '__main__':
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
     app.logger.info('running app')
-    socketio.run(app, debug=true, log_output=true)
+    socketio.run(app, debug=True, log_output=True)

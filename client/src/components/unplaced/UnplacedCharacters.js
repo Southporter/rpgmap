@@ -18,17 +18,20 @@ const AbsoluteBottom = styled.div`
 export default class UnplacedCharacters extends PureComponent {
 	static propTypes = {
 		characters: PropTypes.object,
+		user: PropTypes.string,
 	}
 
 	renderCharacters() {
 		const { characters } = this.props;
+		console.debug('props', this.props);
 		return characters.map(character => (
 			<PlayerCharacter
+				user={this.props.user}
 				name={character.name}
 				key={character.name}
 				color={character.color}
 				character={character}
-				/>
+			/>
 		));
 	}
 

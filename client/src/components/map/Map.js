@@ -13,12 +13,14 @@ class Map extends PureComponent {
 		width: PropTypes.number,
 		characters: PropTypes.object,
 		unplaced: PropTypes.object,
+		role: PropTypes.string,
 	}
 
 	reduceCharacters = (row, column) => (characters, character) => {
 		if (character.col === column && character.row === row) {
 			characters.push(
 				<PlayerCharacter
+					user={this.props.role}
 					name={character.name}
 					key={character.name}
 					character={character}
@@ -66,6 +68,7 @@ class Map extends PureComponent {
 				{this.renderRows()}
 				<UnplacedCharacters
 					characters={this.props.unplaced}
+					user={this.props.role}
 				/>
 			</Container>
 		);

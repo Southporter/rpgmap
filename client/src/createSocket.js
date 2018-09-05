@@ -9,6 +9,7 @@ const handleCreatedMessage = (dispatch) => (event) => {
 };
 
 const handleMessage = (dispatch) => (event) => {
+	console.debug('handling message', event);
 	dispatch({ type: RECEIVE_STATE, payload: event });
 };
 
@@ -21,12 +22,9 @@ const handleClose = (/*dispatch*/) => (event) => {
 };
 
 export default function createSocket(dispatch) {
-	const { protocol, host, port } = window.location;
-	console.debug('port', port);
-	let url = `${protocol}//${host}`;
-	if (port) {
-		url = `${url}:${port}`;
-	}
+	const { protocol, host } = window.location;
+	let url = process.env.NODE_ENV === 'development' ?
+		'http://localhost:5000' : `${protocol}//${host}`;
 	console.debug('url', url);
 	const socket = io(url);
 	socket.on('message', handleMessage(dispatch));
@@ -36,13 +34,13 @@ export default function createSocket(dispatch) {
 	return socket;
 }
 
-export const sendState = (state, socket) => {
+export const sendState = (state, socket, override = false) => {
 	// eslint-disable-next-line no-unused-vars
 	const { chat, ...rest } = state;
 	const code = state.map.code;
 	const role = state.map.role;
 
-	if (code && role === ROLES.ADMIN) {
+	if ((code && role === ROLES.ADMIN) || override) {
 		socket.emit('sendState', {
 			code,
 			role,
@@ -50,3 +48,4 @@ export const sendState = (state, socket) => {
 		});
 	}
 };
+
